@@ -423,11 +423,10 @@ typedef enum _ENetEventType
    ENET_EVENT_TYPE_CONNECT    = 1,  
 
    /** a peer has disconnected.  This event is generated on a successful 
-     * completion of a disconnect initiated by enet_peer_disconnect, if 
-     * a peer has timed out, or if a connection request intialized by 
-     * enet_host_connect has timed out.  The peer field contains the peer 
-     * which disconnected. The data field contains user supplied data 
-     * describing the disconnection, or 0, if none is available.
+     * completion of a disconnect initiated by enet_peer_disconnect. 
+     * The peer field contains the peer which disconnected. 
+     * The data field contains user supplied data describing the disconnection, 
+     * or 0, if none is available.
      */
    ENET_EVENT_TYPE_DISCONNECT = 2,  
 
@@ -437,7 +436,16 @@ typedef enum _ENetEventType
      * the packet that was received; this packet must be destroyed with
      * enet_packet_destroy after use.
      */
-   ENET_EVENT_TYPE_RECEIVE    = 3
+   ENET_EVENT_TYPE_RECEIVE    = 3,
+
+   /** a peer has timed out.  This event is generated if 
+     * a peer has timed out, or if a connection request intialized by 
+     * enet_host_connect has timed out.  The peer field contains the peer 
+     * which disconnected. The data field contains user supplied data 
+     * describing the disconnection, or 0, if none is available.
+     */
+   ENET_EVENT_TYPE_DISCONNECT_TIMEOUT = 2,  
+
 } ENetEventType;
 
 /**

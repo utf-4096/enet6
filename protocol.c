@@ -80,7 +80,7 @@ enet_protocol_dispatch_incoming_commands (ENetHost * host, ENetEvent * event)
        case ENET_PEER_STATE_ZOMBIE:
            host -> recalculateBandwidthLimits = 1;
 
-           event -> type = ENET_EVENT_TYPE_DISCONNECT;
+           event -> type = ENET_EVENT_TYPE_DISCONNECT_TIMEOUT;
            event -> peer = peer;
            event -> data = peer -> eventData;
 
@@ -145,6 +145,31 @@ enet_protocol_notify_disconnect (ENetHost * host, ENetPeer * peer, ENetEvent * e
     if (event != NULL)
     {
         event -> type = ENET_EVENT_TYPE_DISCONNECT;
+        event -> peer = peer;
+        event -> data = 0;
+
+        enet_peer_reset (peer);
+    }
+    else 
+    {
+        peer -> eventData = 0;
+
+        enet_protocol_dispatch_state (host, peer, ENET_PEER_STATE_ZOMBIE);
+    }
+}
+
+static void
+enet_protocol_notify_disconnect_timeout (ENetHost * host, ENetPeer * peer, ENetEvent * event)
+{
+    if (peer -> state >= ENET_PEER_STATE_CONNECTION_PENDING)
+       host -> recalculateBandwidthLimits = 1;
+
+    if (peer -> state != ENET_PEER_STATE_CONNECTING && peer -> state < ENET_PEER_STATE_CONNECTION_SUCCEEDED)
+        enet_peer_reset (peer);
+    else
+    if (event != NULL)
+    {
+        event -> type = ENET_EVENT_TYPE_DISCONNECT_TIMEOUT;
         event -> peer = peer;
         event -> data = 0;
 
@@ -1372,7 +1397,7 @@ enet_protocol_check_timeouts (ENetHost * host, ENetPeer * peer, ENetEvent * even
                ((1 << (outgoingCommand -> sendAttempts - 1)) >= peer -> timeoutLimit &&
                  ENET_TIME_DIFFERENCE (host -> serviceTime, peer -> earliestTimeout) >= peer -> timeoutMinimum)))
        {
-          enet_protocol_notify_disconnect (host, peer, event);
+          enet_protocol_notify_disconnect_timeout (host, peer, event);
 
           return 1;
        }
