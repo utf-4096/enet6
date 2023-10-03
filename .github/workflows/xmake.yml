@@ -30,7 +30,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: "Set OUTPUT_FILE variable"
-      run: echo "OUTPUT_FILE=${{ matrix.config.plat }}_${{ matrix.config.arch }}_${{ matrix.mode }}_${{ matrix.kind }}${{ (matrix.config.plat == 'windows' || matrix.config.plat == 'mingw') && '.zip' || '.tar.gz' }}" >> $GITHUB_ENV
+      run: echo "OUTPUT_FILE=enet6-${{ matrix.config.plat }}_${{ matrix.config.arch }}_${{ matrix.mode }}_${{ matrix.kind }}${{ (matrix.config.plat == 'windows' || matrix.config.plat == 'mingw') && '.zip' || '.tar.gz' }}" >> $GITHUB_ENV
       shell: bash
 
     - name: Setup xmake (!MinGW)
@@ -69,7 +69,7 @@ jobs:
     - name: Archive result
       uses: ihiroky/archive-action@v1
       with:
-        root_dir: enet6
+        root_dir: enet6/
         file_path: ${{ env.OUTPUT_FILE }}
         verbose: true
 
