@@ -146,3 +146,7 @@ Feel free to use it.
 ### Is there a closer version to libenet with only IPv6 support?
 
 Yes! Check the ipv6 branch which was used for my IPv6 pull request to ENet
+
+### Why bump from ENet 1.x.y to ENet6 6.x.y?
+
+ENet has been in version 1.x.y for 15+ years, I'm catching up (jk).
