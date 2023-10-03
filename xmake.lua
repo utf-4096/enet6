@@ -29,7 +29,7 @@ add_includedirs("include")
 target("enet6", function ()
     set_kind("$(kind)")
 
-    add_headerfiles("include/(enet/*.h)")
+    add_headerfiles("include/(enet6/*.h)")
     add_files("src/*.c")
 
     if is_kind("shared") then

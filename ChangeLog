@@ -1,4 +1,4 @@
-ENet-ipv6 (October 3, 2023):
+ENet6 6.0.0 (October 3, 2023):
 
 * Fork ENet to add IPv6 support
 * ENet peers timing out now generates ENET_EVENT_TYPE_DISCONNECT_TIMEOUT event

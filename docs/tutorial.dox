@@ -17,7 +17,7 @@
 
 @section Initialization Initialization
 
-You should include the file <enet/enet.h> when using ENet. Do not
+You should include the file <enet6/enet.h> when using ENet. Do not
 include <enet.h> without the directory prefix, as this may cause
 file name conflicts on some systems.
 
@@ -26,7 +26,7 @@ library. Upon program exit, you should call enet_deinitialize() so
 that the library may clean up any used resources.
 
 @code
-#include <enet/enet.h>
+#include <enet6/enet.h>
 
 int 
 main (int argc, char ** argv) 
