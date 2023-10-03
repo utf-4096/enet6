@@ -67,15 +67,16 @@ and the resources used by the host will be freed.
     /* A specific host address can be specified by   */
     /* enet_address_set_host (& address, "x.x.x.x"); */
 
-    address.host = ENET_HOST_ANY;
+    enet_address_build_any(&address, ENET_ADDRESS_TYPE_IPV6);
     /* Bind the server to port 1234. */
     address.port = 1234;
 
-    server = enet_host_create (& address /* the address to bind the server host to */, 
-                                 32      /* allow up to 32 clients and/or outgoing connections */,
-                                  2      /* allow up to 2 channels to be used, 0 and 1 */,
-                                  0      /* assume any amount of incoming bandwidth */,
-                                  0      /* assume any amount of outgoing bandwidth */);
+    server = enet_host_create (ENET_ADDRESS_TYPE_ANY /* has to match address.type, except if ENET_ADDRESS_TYPE_ANY which means dual-stack*/,
+                               & address             /* the address to bind the server host to */, 
+                                 32                  /* allow up to 32 clients and/or outgoing connections */,
+                                  2                  /* allow up to 2 channels to be used, 0 and 1 */,
+                                  0                  /* assume any amount of incoming bandwidth */,
+                                  0                  /* assume any amount of outgoing bandwidth */);
     if (server == NULL)
     {
         fprintf (stderr, 
@@ -99,7 +100,8 @@ may be simultaneously open.
 @code
     ENetHost * client;
 
-    client = enet_host_create (NULL /* create a client host */,
+    client = enet_host_create (ENET_ADDRESS_TYPE_IPV6 /* create an IPv6 host*/,
+                NULL /* create a client host */,
                 1 /* only allow 1 outgoing connection */,
                 2 /* allow up 2 channels to be used, 0 and 1 */,
                 0 /* assume any amount of incoming bandwidth */,
@@ -155,10 +157,14 @@ field must be destroyed with enet_packet_destroy() when you are done
 inspecting its contents.
 
 An event of type ENET_EVENT_TYPE_DISCONNECT is returned when a connected peer
-has either explicitly disconnected or timed out. Only the "peer" field of the
+has explicitly disconnected. Only the "peer" field of the
 event structure is valid for this event and contains the peer that 
 disconnected. Only the "data" field of the peer is still valid on a 
 disconnect event and must be explicitly reset.
+
+An event of type ENET_EVENT_TYPE_DISCONNECT_TIMEOUT is returned when a connected peer
+has timed out. This event is identicaly to ENET_EVENT_TYPE_DISCONNECT except for the
+ disconnection reason.
 
 @code
     ENetEvent event;
@@ -191,6 +197,7 @@ disconnect event and must be explicitly reset.
             break;
            
         case ENET_EVENT_TYPE_DISCONNECT:
+        case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
             printf ("%s disconnected.\n", event.peer -> data);
 
             /* Reset the peer's client information. */
