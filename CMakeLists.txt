@@ -57,7 +57,7 @@ endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(INCLUDE_FILES_PREFIX include/enet)
+set(INCLUDE_FILES_PREFIX include/enet6)
 set(INCLUDE_FILES
     ${INCLUDE_FILES_PREFIX}/callbacks.h
     ${INCLUDE_FILES_PREFIX}/enet.h
