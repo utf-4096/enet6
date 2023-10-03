@@ -36,8 +36,8 @@ target("enet6", function ()
         add_defines("ENET_DLL", { public = true })
     end
 
-    if is_plat("windows") then
-        add_syslinks("winmm", "ws2_32")
+    if is_plat("windows", "mingw") then
+        add_syslinks("winmm", "ws2_32", { public = true })
     else
         add_options(
             "fcntl",
