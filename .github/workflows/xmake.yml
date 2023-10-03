@@ -82,5 +82,3 @@ jobs:
         file: ${{ env.OUTPUT_FILE }}
         asset_name: ${{ env.OUTPUT_FILE }}
         tag: ${{ github.ref }}
-        overwrite: true
-        body: Version ${{ github.ref }}
