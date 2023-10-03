@@ -22,6 +22,24 @@ xmake
 
 You can then install it using `sudo xmake install` (system-wide) or `xmake install -o dest_folder`
 
+## How to use this library
+
+You can find precompiled binaries in the [releases](https://github.com/SirLynix/enet6/releases/tag/v6.0.0).
+
+If you're using [XMake](https://xmake.io), you can also simply use the `enet6` packages from xmake-repo, for example:
+```lua
+add_rules("mode.debug", "mode.release")
+add_requires("enet6")
+
+target("my_project")
+    add_files("src/main.c")
+    add_packages("enet6")
+```
+
+This will make XMake download and compile enet6 on your computer and configure the compiler to have the right include dirs/link dirs/links so you can use it out of the box.
+
+You can then generate Visual Studio projects, CMakeLists, or directly compile using xmake.
+
 ## Frequently asked questions:
 
 ### Is there a tutorial? / How to use it?
@@ -135,7 +153,7 @@ Yes! You can connect to a regular enet server using a enet host created with the
 
 ### But why?
 
-ENet received **four** pull requests to add IPv6 support between 2013 and 2019, and no one has ever been accepted or dismissed by ENet author which seems to just ignore the problem and keep ENet as a growing old library with no support for IPv4.
+ENet received **four** pull requests to add IPv6 support between 2013 and 2019, and no one has ever been accepted or dismissed by ENet author which seems to just ignore the problem and keep ENet as a growing old library with no support for IPv6.
 
 As a network programming teacher, I'm constantly running into issues like ENet only supporting IPv4 and other forks (like [ENet-CSharp](https://github.com/nxrighthere/ENet-CSharp)) solely relying on IPv6 which may not work on some network/computers.
 

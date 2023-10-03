@@ -1,9 +1,15 @@
-on: [push, pull_request]
+name: XMake build
 
 permissions:
   contents: write
 
-name: XMake build
+on:
+  pull_request:
+  push:
+      paths-ignore:
+        - '.gitignore'
+        - 'LICENSE'
+        - 'README.md'
 
 jobs:
   xmake-build:
