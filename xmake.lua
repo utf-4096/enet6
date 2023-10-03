@@ -2,7 +2,7 @@ add_rules("mode.debug", "mode.release")
 
 set_project("enet-ipv6")
 
-if not is_plat("windows") then
+if not is_plat("windows", "mingw") then
     -- detect features on Unix platforms
     option("fcntl", { cincludes = {"fcntl.h", "unistd.h"}, cfuncs = "fcntl", defines = "HAS_FCNTL=1"})
     option("poll", { cincludes = {"poll.h"}, cfuncs = "poll", defines = "HAS_POLL=1"})
@@ -40,14 +40,15 @@ target("enet6", function ()
         add_syslinks("winmm", "ws2_32")
     else
         add_options(
-            "fcntl", 
+            "fcntl",
             "poll", 
-            "getaddrinfo", 
-            "getnameinfo", 
-            "gethostbyaddr_r", 
-            "gethostbyname_r", 
-            "inet_pton", 
-            "inet_ntop", 
-            "msghdr_flags")
+            "getaddrinfo",
+            "getnameinfo",
+            "gethostbyaddr_r",
+            "gethostbyname_r",
+            "inet_pton",
+            "inet_ntop",
+            "msghdr_flags",
+            "socklen_t")
     end
 end)
