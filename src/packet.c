@@ -155,4 +155,33 @@ enet_crc32 (const ENetBuffer * buffers, size_t bufferCount)
     return ENET_HOST_TO_NET_32 (~ crc);
 }
 
+void* enet_packet_get_data(const ENetPacket* packet) {
+  return (void*)packet->data;
+}
+
+void* enet_packet_get_user_data(const ENetPacket* packet) {
+  return packet->userData;
+}
+
+void enet_packet_set_user_data(ENetPacket* packet, void* userData) {
+  packet->userData = userData;
+}
+
+int enet_packet_get_length(const ENetPacket* packet) {
+  return packet->dataLength;
+}
+
+void enet_packet_set_free_callback(ENetPacket* packet, ENetPacketFreeCallback callback) {
+  packet->freeCallback = callback;
+}
+
+int enet_packet_check_references(const ENetPacket* packet) {
+  return (int)packet->referenceCount;
+}
+
+void enet_packet_dispose(ENetPacket* packet) {
+  if (packet->referenceCount == 0)
+    enet_packet_destroy(packet);
+}
+
 /** @} */

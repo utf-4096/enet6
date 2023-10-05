@@ -506,5 +506,43 @@ enet_host_bandwidth_throttle (ENetHost * host)
        } 
     }
 }
+
+enet_uint32 enet_host_get_peers_count(const ENetHost* host) {
+  return host->connectedPeers;
+}
+
+enet_uint32 enet_host_get_packets_sent(const ENetHost* host) {
+  return host->totalSentPackets;
+}
+
+enet_uint32 enet_host_get_packets_received(const ENetHost* host) {
+  return host->totalReceivedPackets;
+}
+
+enet_uint32 enet_host_get_bytes_sent(const ENetHost* host) {
+  return host->totalSentData;
+}
+
+enet_uint32 enet_host_get_bytes_received(const ENetHost* host) {
+  return host->totalReceivedData;
+}
+
+void enet_host_set_max_duplicate_peers(ENetHost* host, enet_uint16 number) {
+  if (number < 1)
+    number = 1;
+
+  if (number > ENET_PROTOCOL_MAXIMUM_PEER_ID)
+    number = ENET_PROTOCOL_MAXIMUM_PEER_ID;
+
+  host->duplicatePeers = number;
+}
+
+void enet_host_set_intercept_callback(ENetHost* host, ENetInterceptCallback callback) {
+  host->intercept = callback;
+}
+
+void enet_host_set_checksum_callback(ENetHost* host, ENetChecksumCallback callback) {
+  host->checksum = callback;
+}
     
 /** @} */

@@ -669,6 +669,42 @@ ENET_API size_t enet_range_coder_decompress (void *, const enet_uint8 *, size_t,
 
 extern size_t enet_protocol_command_size (enet_uint8);
 
+/** @defgroup Extended API for easier binding in other programming languages
+    @{
+*/
+
+ENET_API void* enet_packet_get_data(const ENetPacket*);
+ENET_API void* enet_packet_get_user_data(const ENetPacket*);
+ENET_API void enet_packet_set_user_data(ENetPacket*, void* userData);
+ENET_API int enet_packet_get_length(const ENetPacket*);
+ENET_API void enet_packet_set_free_callback(ENetPacket*, ENetPacketFreeCallback);
+ENET_API int enet_packet_check_references(const ENetPacket*);
+ENET_API void enet_packet_dispose(ENetPacket*);
+
+ENET_API enet_uint32 enet_host_get_peers_count(const ENetHost*);
+ENET_API enet_uint32 enet_host_get_packets_sent(const ENetHost*);
+ENET_API enet_uint32 enet_host_get_packets_received(const ENetHost*);
+ENET_API enet_uint32 enet_host_get_bytes_sent(const ENetHost*);
+ENET_API enet_uint32 enet_host_get_bytes_received(const ENetHost*);
+ENET_API void enet_host_set_max_duplicate_peers(ENetHost*, enet_uint16);
+ENET_API void enet_host_set_intercept_callback(ENetHost*, ENetInterceptCallback);
+ENET_API void enet_host_set_checksum_callback(ENetHost*, ENetChecksumCallback);
+
+ENET_API enet_uint32 enet_peer_get_id(const ENetPeer*);
+ENET_API int enet_peer_get_ip(const ENetPeer*, char*, size_t);
+ENET_API enet_uint16 enet_peer_get_port(const ENetPeer*);
+ENET_API enet_uint32 enet_peer_get_mtu(const ENetPeer*);
+ENET_API ENetPeerState enet_peer_get_state(const ENetPeer*);
+ENET_API enet_uint32 enet_peer_get_rtt(const ENetPeer*);
+ENET_API enet_uint32 enet_peer_get_last_rtt(const ENetPeer* peer);
+ENET_API enet_uint32 enet_peer_get_lastsendtime(const ENetPeer*);
+ENET_API enet_uint32 enet_peer_get_lastreceivetime(const ENetPeer*);
+ENET_API float enet_peer_get_packets_throttle(const ENetPeer*);
+ENET_API void* enet_peer_get_data(const ENetPeer*);
+ENET_API void enet_peer_set_data(ENetPeer*, const void*);
+
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
