@@ -444,7 +444,7 @@ typedef enum _ENetEventType
      * which disconnected. The data field contains user supplied data 
      * describing the disconnection, or 0, if none is available.
      */
-   ENET_EVENT_TYPE_DISCONNECT_TIMEOUT = 2,  
+   ENET_EVENT_TYPE_DISCONNECT_TIMEOUT = 4, 
 
 } ENetEventType;
 
