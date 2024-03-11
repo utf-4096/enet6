@@ -128,6 +128,7 @@ typedef enum _ENetPacketFlag
    ENET_PACKET_FLAG_SENT = (1<<8)
 } ENetPacketFlag;
 
+typedef void (ENET_CALLBACK * ENetPacketAcknowledgedCallback) (struct _ENetPacket *);
 typedef void (ENET_CALLBACK * ENetPacketFreeCallback) (struct _ENetPacket *);
 
 /**
@@ -155,12 +156,14 @@ typedef void (ENET_CALLBACK * ENetPacketFreeCallback) (struct _ENetPacket *);
  */
 typedef struct _ENetPacket
 {
-   size_t                   referenceCount;  /**< internal use only */
-   enet_uint32              flags;           /**< bitwise-or of ENetPacketFlag constants */
-   enet_uint8 *             data;            /**< allocated data for packet */
-   size_t                   dataLength;      /**< length of data */
-   ENetPacketFreeCallback   freeCallback;    /**< function to be called when the packet is no longer in use */
-   void *                   userData;        /**< application private data, may be freely modified */
+   size_t                         referenceCount;      /**< internal use only */
+   enet_uint32                    flags;               /**< bitwise-or of ENetPacketFlag constants */
+   enet_uint8 *                   data;                /**< allocated data for packet */
+   size_t                         dataLength;          /**< length of data */
+   ENetPacketFreeCallback         freeCallback;        /**< function to be called when the packet is no longer in use */
+   void *                         userData;            /**< application private data, may be freely modified */
+   enet_uint32                    remainingFragments;  /**< how many fragments were not acknowledged by the peer, when it reaches 0 acknowledgeCallback is triggered */
+   ENetPacketAcknowledgedCallback acknowledgeCallback; /**< function to be called when the reliable packet has been acknowledged by the peer */
 } ENetPacket;
 
 typedef struct _ENetAcknowledgement

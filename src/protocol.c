@@ -292,7 +292,13 @@ enet_protocol_remove_sent_reliable_command (ENetPeer * peer, enet_uint16 reliabl
     if (outgoingCommand -> packet != NULL)
     {
        if (wasSent)
-         peer -> reliableDataInTransit -= outgoingCommand -> fragmentLength;
+       {
+          peer->reliableDataInTransit -= outgoingCommand->fragmentLength;
+
+          --outgoingCommand->packet->remainingFragments;
+          if (outgoingCommand -> packet -> remainingFragments == 0 && outgoingCommand -> packet -> acknowledgeCallback)
+              outgoingCommand -> packet -> acknowledgeCallback(outgoingCommand->packet);
+       }
 
        -- outgoingCommand -> packet -> referenceCount;
 

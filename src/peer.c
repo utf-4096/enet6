@@ -147,6 +147,8 @@ enet_peer_send (ENetPeer * peer, enet_uint8 channelID, ENetPacket * packet)
         
       enet_list_clear (& fragments);
 
+      packet -> remainingFragments = fragmentCount;
+
       for (fragmentNumber = 0,
              fragmentOffset = 0;
            fragmentOffset < packet -> dataLength;
@@ -195,6 +197,8 @@ enet_peer_send (ENetPeer * peer, enet_uint8 channelID, ENetPacket * packet)
 
       return 0;
    }
+
+   packet -> remainingFragments = 1;
 
    command.header.channelID = channelID;
 
