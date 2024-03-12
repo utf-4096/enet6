@@ -19,14 +19,20 @@ jobs:
       fail-fast: false
       matrix:
         config:
+        - { runner: windows-latest, plat: windows,  arch: x86 }
         - { runner: windows-latest, plat: windows,  arch: x64 }
+        - { runner: windows-latest, plat: windows,  arch: arm64 }
+        - { runner: windows-latest, plat: mingw,    arch: i386 }
         - { runner: windows-latest, plat: mingw,    arch: x86_64 }
         - { runner: ubuntu-latest,  plat: linux,    arch: x86_64 }
+        - { runner: ubuntu-latest,  plat: android,  arch: x86 }
+        - { runner: ubuntu-latest,  plat: android,  arch: x86_64 }
         - { runner: ubuntu-latest,  plat: android,  arch: armeabi-v7a }
         - { runner: ubuntu-latest,  plat: android,  arch: arm64-v8a }
-        - { runner: macos-latest,   plat: macosx,   arch: x86_64 }
-        - { runner: macos-latest,   plat: macosx,   arch: arm64 }
-        - { runner: macos-latest,   plat: iphoneos, arch: arm64 }
+        - { runner: macos-14,       plat: macosx,   arch: x86_64 }
+        - { runner: macos-14,       plat: macosx,   arch: arm64 }
+        - { runner: macos-14,       plat: iphoneos, arch: x86_64 }
+        - { runner: macos-14,       plat: iphoneos, arch: arm64 }
         mode: [debug, release]
         kind: [shared, static]
     defaults:
@@ -72,6 +78,12 @@ jobs:
 
     - name: Install
       run: xmake install -v -o enet6/
+
+    # For some reason macOS-14 doesn't seem to have Python
+    - uses: actions/setup-python@v5
+      if: ${{ matrix.config.runner == 'macos-14' }}
+      with:
+        python-version: "3.11"
 
     - name: Archive result
       uses: ihiroky/archive-action@v1
