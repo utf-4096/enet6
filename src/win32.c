@@ -17,9 +17,9 @@
 static enet_uint32 timeBase = 0;
 
 static int addressFamily[] = {
-    AF_UNSPEC, //< ENET_ADDRESS_TYPE_ANY
-    AF_INET,   //< ENET_ADDRESS_TYPE_IPV4
-    AF_INET6   //< ENET_ADDRESS_TYPE_IPV6
+    AF_UNSPEC, /* ENET_ADDRESS_TYPE_ANY */
+    AF_INET,   /* ENET_ADDRESS_TYPE_IPV4 */
+    AF_INET6   /* ENET_ADDRESS_TYPE_IPV6 */
 };
 
 static int 
@@ -213,7 +213,7 @@ enet_address_set_host(ENetAddress * address, ENetAddressType type, const char * 
                         addressScore += 5; /* lower score than IPv6 addresses */
                     else if (type == ENET_ADDRESS_TYPE_IPV6)
                     {
-                        // Convert that IPv4 to an IPv6
+                        /* Convert that IPv4 to an IPv6 */
                         enet_address_convert_ipv6(&tempAddress);
                         addressScore += 3; /* lower score than a real IPv6 */
                     }
