@@ -105,6 +105,7 @@ namespace ENet6
     public delegate IntPtr AllocCallback(IntPtr size);
     public delegate void FreeCallback(IntPtr memory);
     public delegate void NoMemoryCallback();
+    public delegate void PacketAcknowledgeCallback(Packet packet);
     public delegate void PacketFreeCallback(Packet packet);
     public delegate int InterceptCallback(ref Event @event, ref Address address, IntPtr receivedData, int receivedDataLength);
     public delegate uint ChecksumCallback(IntPtr buffers, int bufferCount);
@@ -396,6 +397,20 @@ namespace ENet6
         {
             if (nativePacket == IntPtr.Zero)
                 throw new InvalidOperationException("Packet not created");
+        }
+
+        public void SetAcknowledgeCallback(IntPtr callback)
+        {
+            ThrowIfNotCreated();
+
+            Native.enet_packet_set_acknowledge_callback(nativePacket, callback);
+        }
+
+        public void SetAcknowledgeCallback(PacketAcknowledgeCallback callback)
+        {
+            ThrowIfNotCreated();
+
+            Native.enet_packet_set_acknowledge_callback(nativePacket, Marshal.GetFunctionPointerForDelegate(callback));
         }
 
         public void SetFreeCallback(IntPtr callback)
@@ -1091,6 +1106,9 @@ namespace ENet6
 
         [DllImport(nativeLibrary, CallingConvention = CallingConvention.Cdecl)]
         internal static extern int enet_packet_get_length(IntPtr packet);
+
+        [DllImport(nativeLibrary, CallingConvention = CallingConvention.Cdecl)]
+        internal static extern void enet_packet_set_acknowledge_callback(IntPtr packet, IntPtr callback);
 
         [DllImport(nativeLibrary, CallingConvention = CallingConvention.Cdecl)]
         internal static extern void enet_packet_set_free_callback(IntPtr packet, IntPtr callback);

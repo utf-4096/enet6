@@ -173,6 +173,10 @@ int enet_packet_get_length(const ENetPacket* packet) {
   return packet->dataLength;
 }
 
+void enet_packet_set_acknowledge_callback(ENetPacket* packet, ENetPacketAcknowledgedCallback callback) {
+  packet->acknowledgeCallback = callback;
+}
+
 void enet_packet_set_free_callback(ENetPacket* packet, ENetPacketFreeCallback callback) {
   packet->freeCallback = callback;
 }

@@ -680,6 +680,7 @@ ENET_API void* enet_packet_get_data(const ENetPacket*);
 ENET_API void* enet_packet_get_user_data(const ENetPacket*);
 ENET_API void enet_packet_set_user_data(ENetPacket*, void* userData);
 ENET_API int enet_packet_get_length(const ENetPacket*);
+ENET_API void enet_packet_set_acknowledge_callback(ENetPacket*, ENetPacketAcknowledgedCallback);
 ENET_API void enet_packet_set_free_callback(ENetPacket*, ENetPacketFreeCallback);
 ENET_API int enet_packet_check_references(const ENetPacket*);
 ENET_API void enet_packet_dispose(ENetPacket*);
