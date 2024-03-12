@@ -22,8 +22,8 @@ jobs:
         - { runner: windows-latest, plat: windows,  arch: x86 }
         - { runner: windows-latest, plat: windows,  arch: x64 }
         - { runner: windows-latest, plat: windows,  arch: arm64 }
-        - { runner: windows-latest, plat: mingw,    arch: i386 }
-        - { runner: windows-latest, plat: mingw,    arch: x86_64 }
+        - { runner: windows-latest, plat: mingw,    arch: i386,   msys_arch: i686,   msys_msystem: mingw32 }
+        - { runner: windows-latest, plat: mingw,    arch: x86_64, msys_arch: x86_64, msys_msystem: mingw64 }
         - { runner: ubuntu-latest,  plat: linux,    arch: x86_64 }
         - { runner: ubuntu-latest,  plat: android,  arch: x86 }
         - { runner: ubuntu-latest,  plat: android,  arch: x86_64 }
@@ -55,8 +55,8 @@ jobs:
       if: ${{ matrix.config.plat == 'mingw' }}
       uses: msys2/setup-msys2@v2
       with:
-        msystem: mingw64
-        install: base-devel git unzip p7zip mingw-w64-${{ matrix.config.arch }}-toolchain mingw-w64-${{ matrix.config.arch }}-xmake
+        msystem: ${{ matrix.config.msys_msystem }}
+        install: base-devel git unzip p7zip mingw-w64-${{ matrix.config.msys_arch }}-toolchain mingw-w64-${{ matrix.config.msys_arch }}-xmake
         update: true
 
     - name: Download NDK (Android)
