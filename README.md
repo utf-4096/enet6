@@ -151,6 +151,8 @@ enet_host_destroy(client);
 
 Yes! You can connect to a regular enet server using a enet host created with the ENET_ADDRESS_TYPE_IPV4 address type (or ENET_ADDRESS_TYPE_ANY by using a IPv4-mapped IPv6). Regular enet clients can also connect to a enet6 host, if it was created using a ENET_ADDRESS_TYPE_ANY address type.
 
+However, enet6 is not compatible with regular enet once encryption is enabled, for obvious reasons.
+
 ### But why?
 
 ENet received **four** pull requests to add IPv6 support between 2013 and 2019, and no one has ever been accepted or dismissed by ENet author which seems to just ignore the problem and keep ENet as a growing old library with no support for IPv6.
@@ -168,3 +170,24 @@ Yes! Check the ipv6 branch which was used for my IPv6 pull request to ENet
 ### Why bump from ENet 1.x.y to ENet6 6.x.y?
 
 ENet has been in version 1.x.y for 15+ years, I'm catching up (jk).
+
+### How does encryption works?
+
+If you wish to use encryption, you need to set up enet_host_encrypt and pass an ENetEncryptor *on both ends*.
+
+Since original ENet protocol can't be extended to support encryption, setting up an encryptor changes the protocol and breaks compatibility with regular ENet clients (this shouldn't be an issue as ENet does not support encryption at all anyway).
+
+ENet6 will then call the encrypt callback before sending the packet, this callbacks works in a similar way to the compress callback (from compressor) except it receives the peer (allowing you to set a per-peer encryption key) and the callback can output more data than it receives.
+When receiving an encrypted packet, the decrypt callback will be called as well.
+
+Note that the peer pointer will be NULL when connecting in the encrypt callback.
+
+A common pattern is to enable encryption only connection (by sending a special packet), to do this:
+ 1. Set up encryption callbacks on both ends (this is necessary because it changes the protocol) but make the encrypt callback return 0 for now (using a boolean in the peer data).
+ 2. (Client) Connect to the server as usual.
+ 3. (Client) Send a special packet to enable encryption (for better security, use an encrypted token which only the remote host can decrypt).
+ 4. (Server) Enables encryption in the peer data, making packets encrypted from now.
+ 5. (Client) When receiving an encrypted packet (in decrypt callback), enable encryption as well.
+ 6. Encryption is now enabled on both server and client.
+
+Check encryption example.
