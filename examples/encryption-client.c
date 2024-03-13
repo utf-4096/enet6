@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
                 case ENET_EVENT_TYPE_DISCONNECT:
                     printf("(Client) Disconnected from server.\n");
-                    return;
+                    return EXIT_SUCCESS;
             }
         }
         else if (serverPeer->state == ENET_PEER_STATE_CONNECTED)
