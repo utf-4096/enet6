@@ -116,6 +116,11 @@ enet_host_create (ENetAddressType type, const ENetAddress * address, size_t peer
     host -> compressor.decompress = NULL;
     host -> compressor.destroy = NULL;
 
+    host -> encryptor.context = NULL;
+    host -> encryptor.encrypt = NULL;
+    host -> encryptor.decrypt = NULL;
+    host -> encryptor.destroy = NULL;
+
     host -> intercept = NULL;
 
     enet_list_clear (& host -> dispatchQueue);
@@ -163,6 +168,9 @@ enet_host_destroy (ENetHost * host)
 
     if (host -> compressor.context != NULL && host -> compressor.destroy)
       (* host -> compressor.destroy) (host -> compressor.context);
+      
+    if (host -> encryptor.context != NULL && host ->encryptor.destroy)
+      (* host ->encryptor.destroy) (host ->encryptor.context);
 
     enet_free (host -> peers);
     enet_free (host);
@@ -176,6 +184,25 @@ enet_host_random (ENetHost * host)
     n = (n ^ (n >> 15)) * (n | 1U);
     n ^= n + (n ^ (n >> 7)) * (n | 61U);
     return n ^ (n >> 14);
+}
+
+/** Sets the packet encryptor the host should use to encrypt and decrypt packets.
+    @param host host to enable or disable encryption for
+    @param compressor callbacks for for the packet encryptor; if NULL, then encryption is disabled
+
+    @remarks enabling encryption enables the enet6 extended protocol and breaks compatibility 
+    with the regular enet protocol.
+*/
+void
+enet_host_encrypt(ENetHost* host, const ENetEncryptor* encryptor)
+{
+    if (host->encryptor.context != NULL && host->encryptor.destroy)
+        (*host->encryptor.destroy) (host->encryptor.context);
+
+    if (encryptor)
+        host->encryptor = *encryptor;
+    else
+        host->encryptor.context = NULL;
 }
 
 /** Initiates a connection to a foreign host.

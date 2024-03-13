@@ -350,6 +350,21 @@ typedef struct _ENetCompressor
    void (ENET_CALLBACK * destroy) (void * context);
 } ENetCompressor;
 
+/** An ENet packet encryptor for encrypting UDP packets before socket sends or receives (happens before compression).
+ * It's similar to ENetCompressor but receives the sender/receiver peer as a parameter and can produce a bigger packet on encryption
+ */
+typedef struct _ENetEncryptor
+{
+   /** Context data for the encryptor. Must be non-NULL. */
+   void * context;
+   /** Compresses from inBuffers[0:inBufferCount-1], containing inLimit bytes, to outData, outputting at most outLimit bytes. Should return 0 on failure. */
+   size_t (ENET_CALLBACK * encrypt) (void * context, ENetPeer * peer, const ENetBuffer * inBuffers, size_t inBufferCount, size_t inLimit, enet_uint8 * outData, size_t outLimit);
+   /** Decompresses a packet received from peer (may be null if connection packet) from inData, containing inLimit bytes, to outData, outputting at most outLimit bytes. Should return 0 on failure. */
+   size_t (ENET_CALLBACK * decrypt) (void * context, ENetPeer * peer, const enet_uint8 * inData, size_t inLimit, enet_uint8 * outData, size_t outLimit);
+   /** Destroys the context when encryption is disabled or the host is destroyed. May be NULL. */
+   void (ENET_CALLBACK * destroy) (void * context);
+} ENetEncryptor;
+
 /** Callback that computes the checksum of the data held in buffers[0:bufferCount-1] */
 typedef enet_uint32 (ENET_CALLBACK * ENetChecksumCallback) (const ENetBuffer * buffers, size_t bufferCount);
 
@@ -410,6 +425,8 @@ typedef struct _ENetHost
    size_t               duplicatePeers;              /**< optional number of allowed peers from duplicate IPs, defaults to ENET_PROTOCOL_MAXIMUM_PEER_ID */
    size_t               maximumPacketSize;           /**< the maximum allowable packet size that may be sent or received on a peer */
    size_t               maximumWaitingData;          /**< the maximum aggregate amount of buffer space a peer may use waiting for packets to be delivered */
+   /* enet6 fields start here */
+   ENetEncryptor        encryptor;
 } ENetHost;
 
 /**
@@ -642,6 +659,7 @@ ENET_API void       enet_host_bandwidth_limit (ENetHost *, enet_uint32, enet_uin
 extern   void       enet_host_bandwidth_throttle (ENetHost *);
 extern  enet_uint32 enet_host_random_seed (void);
 extern  enet_uint32 enet_host_random (ENetHost *);
+ENET_API void       enet_host_encrypt(ENetHost*, const ENetEncryptor*);
 
 ENET_API int                 enet_peer_send (ENetPeer *, enet_uint8, ENetPacket *);
 ENET_API ENetPacket *        enet_peer_receive (ENetPeer *, enet_uint8 * channelID);
