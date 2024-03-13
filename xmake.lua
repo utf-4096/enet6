@@ -24,10 +24,13 @@ if not is_plat("windows", "mingw") then
     end)
 end
 
+option("examples", { default = true })
+
 add_includedirs("include")
 
 target("enet6", function ()
     set_kind("$(kind)")
+    set_group("lib")
 
     add_headerfiles("include/(enet6/*.h)")
     add_files("src/*.c")
@@ -52,3 +55,7 @@ target("enet6", function ()
             "socklen_t")
     end
 end)
+
+if has_config("examples") then
+    includes("examples/xmake.lua")
+end
