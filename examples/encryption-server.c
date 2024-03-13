@@ -7,7 +7,7 @@ typedef struct
 } encryption_data;
 
 /* Very simple byte rotation algorithm, of course for encryption you should consider a serious algorithm like xchacha20 */
-size_t encrypt(void* context, ENetPeer* peer, const ENetBuffer* inBuffers, size_t inBufferCount, size_t inLimit, enet_uint8* outData, size_t outLimit)
+size_t simple_encrypt(void* context, ENetPeer* peer, const ENetBuffer* inBuffers, size_t inBufferCount, size_t inLimit, enet_uint8* outData, size_t outLimit)
 {
     size_t i, j;
     encryption_data* peerData;
@@ -29,7 +29,7 @@ size_t encrypt(void* context, ENetPeer* peer, const ENetBuffer* inBuffers, size_
     return inLimit;
 }
 
-size_t decrypt(void* context, ENetPeer* peer, const enet_uint8* inData, size_t inLimit, enet_uint8* outData, size_t outLimit)
+size_t simple_decrypt(void* context, ENetPeer* peer, const enet_uint8* inData, size_t inLimit, enet_uint8* outData, size_t outLimit)
 {
     size_t i;
     encryption_data* peerData;
@@ -50,8 +50,8 @@ size_t decrypt(void* context, ENetPeer* peer, const enet_uint8* inData, size_t i
 
 static ENetEncryptor encryptor = {
     &encryptor, /* can't be null but irrelevant here */
-    encrypt,
-    decrypt,
+    simple_encrypt,
+    simple_decrypt,
     NULL
 };
 
