@@ -1,3 +1,37 @@
+ENet6 6.1.0 (unreleased):
+
+* Added new architectures:
+  - Windows 32bits
+  - Windows ARM64
+  - MinGW i386
+  - Android x86
+  - Android x86_64
+  - iOS x86_64
+* Added ENetPacket acnowledge callback, allowing the application to know when a packet has been acknowledged by the peer
+* Added encryption support. If enabled it allows you to encrypt in a similar way to the compressor (except it receives the peer as a parameter and can output a bigger buffer)
+* Added examples (simple, compressed, encrypted)
+* Fixed ENET_EVENT_TYPE_DISCONNECT_TIMEOUT value
+* Updated ENet base code up until https://github.com/lsalzman/enet/commit/c44b7d0f7ff21edb702745e4c019d0537928c373
+
+ENet6 6.0.2 (October 6, 2023):
+
+* Added macOS arm64 binaries
+* Added a C# binding (derived from the amazing https://github.com/nxrighthere/ENet-CSharp) so enet6 can be used in C# projects or Unity (next step would be to make CI output Unity-ready packages).
+* Added setter/getters functions for packets/host/peers (from https://github.com/nxrighthere/ENet-CSharp) to make it easier to bind ENet6 to other languages
+* Fixed host socket dual-stack on Windows (host created with ENET_ADDRESS_TYPE_ANY could only receive connections from IPv6 peers, now they also can receive connections from IPv4 peers)
+* Fixed ENET_VERSION_PATCH value
+
+ENet6 6.0.1 (October 3, 2023):
+
+* enet_address_get_host_ip: fixed \0 character not being copied to the buffer
+* Added ENET_ADDRESS_MAX_LENGTH define
+* Changed behavior of enet_address_set_host when used with ENET_ADDRESS_TYPE_ANY  
+  In v6.0.0 this function could only output IPv4 addresses when using ENET_ADDRESS_TYPE_IPV4. If ENET_ADDRESS_TYPE_ANY were to be used IPv4 were converted to IPv6.  
+  This behavior was changed/fixed so that :
+  - ENET_ADDRESS_TYPE_IPV4: Returns IPv4
+  - ENET_ADDRESS_TYPE_IPV6: Returns an IPv6 or a IPv4-mapped IPv6 if no IPv6 is known
+  - ENET_ADDRESS_TYPE_ANY: Returns IPv4 or IPv6 (priorize IPv6s)
+
 ENet6 6.0.0 (October 3, 2023):
 
 * Fork ENet to add IPv6 support
