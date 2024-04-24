@@ -1,4 +1,8 @@
-ENet6 6.1.0 (unreleased):
+ENet6 6.1.1 (unreleased):
+
+* Updated ENet base code up until https://github.com/lsalzman/enet/commit/4ce1625b8ae22a4e0030f07d80360e25ae558a1e
+
+ENet6 6.1.0 (April 6, 2024):
 
 * Added new architectures:
   - Windows 32bits

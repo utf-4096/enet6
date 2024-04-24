@@ -210,7 +210,7 @@ has timed out. This event is identicaly to ENET_EVENT_TYPE_DISCONNECT except for
     ...
 @endcode
 
-@section SendingPacket Sending a packet to an ENet peer            
+@section SendingPacket Sending a packet to an ENet peer
 
 Packets in ENet are created with enet_packet_create(), where the size
 of the packet must be specified. Optionally, initial data may be
