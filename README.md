@@ -1,12 +1,17 @@
 # ENet6
 
-This library is a fork of https://github.com/lsalzman/enet, an amazing library and protocol 
+This is a fork of [ENet](https://github.com/lsalzman/enet), a reliable UDP networking library which still doesn't support IPv6 in 2024 (and [ENet's author seems to dislike contributions](https://github.com/lsalzman/enet/issues/78)).
 
-This is a fork of [ENet](https://github.com/lsalzman/enet), a reliable UDP networking library which still doesn't support IPv6 in 2023 (and [ENet's author seems to dislike contributions](https://github.com/lsalzman/enet/issues/78)).
+So here's ENet with full support for dual-stack IPv4 / IPv6.
 
-So here's a ENet fork with full support for dual-stack IPv4 / IPv6.
+It supports additional features ENet lacks while staying true to its lightweight and simple spirit. It's also compatible with ENet protocol so its possible for ENet6 and ENet clients to connect and exchange packets.
 
-I'm also aiming at improving ENet (for example by adding a way to detect timeout)
+Additional features include:
+- Dual-stack IPv4/IPv6 support
+- Callbacks for encryption
+- A separate timed out disconnect event
+- Packets acknowledge callbacks
+- Added a C# binding (derived from the amazing https://github.com/nxrighthere/ENet-CSharp)
 
 ## Build
 
@@ -24,7 +29,7 @@ You can then install it using `sudo xmake install` (system-wide) or `xmake insta
 
 ## How to use this library
 
-You can find precompiled binaries in the [releases](https://github.com/SirLynix/enet6/releases/tag/v6.0.0).
+You can find precompiled binaries in the [releases](https://github.com/SirLynix/enet6/releases).
 
 If you're using [XMake](https://xmake.io), you can also simply use the `enet6` packages from xmake-repo, for example:
 ```lua
